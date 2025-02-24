@@ -1,5 +1,6 @@
 ﻿using EcommerceWeb.Entidades;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,9 +15,14 @@ namespace ECommerceWeb.DataAccess.Data
         {
         }
 
+        public EcommerceDbContext(DbContextOptions<EcommerceDbContext> options) : base(options) 
+        {
+        }
+
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-
+            if (optionsBuilder.IsConfigured) return;
             optionsBuilder.UseSqlServer("Server=MARSHELLA;Database=TiendaATM;Trusted_Connection=True;TrustServerCertificate=True");
             optionsBuilder.LogTo(Console.WriteLine);
         }
