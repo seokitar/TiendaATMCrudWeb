@@ -18,7 +18,7 @@ namespace ECommerceWeb.DataAccess.Data
         public EcommerceDbContext(DbContextOptions<EcommerceDbContext> options) : base(options) 
         {
         }
-
+        
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

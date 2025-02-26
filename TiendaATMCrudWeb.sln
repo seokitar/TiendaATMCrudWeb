@@ -29,7 +29,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04. Data Transfer Objects",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "05. App de Consola", "05. App de Consola", "{6055CA2F-5D97-4082-AF56-227E85D99284}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EcommerceWeb.Dto", "EcommerceWeb.Dto\EcommerceWeb.Dto.csproj", "{5FF7EFD6-E5A9-423E-A9BD-40995618BEDD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EcommerceWeb.Dto", "EcommerceWeb.Dto\EcommerceWeb.Dto.csproj", "{5FF7EFD6-E5A9-423E-A9BD-40995618BEDD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

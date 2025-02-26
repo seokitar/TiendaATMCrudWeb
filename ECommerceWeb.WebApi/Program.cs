@@ -1,4 +1,9 @@
+using Azure;
+using EcommerceWeb.Entidades;
+using EcommerceWeb.Repositorios.Implementaciones;
+using EcommerceWeb.Repositorios.Interfaces;
 using ECommerceWeb.DataAccess.Data;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +18,13 @@ builder.Services.AddDbContext<EcommerceDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Conexion"));
 }
 );
+//Agregamos los repositorios
+builder.Services.AddTransient<ICategoriaRepositorio, CategoriaRepositorio>();
+builder.Services.AddTransient<IProductoRepositorio, ProductoRepositorio>();
+builder.Services.AddTransient<IVentaRepositorio, VentaRepositorio>();
+builder.Services.AddTransient<IClienteRepositorio, ClienteRepositorio>();
+
+
 
 var app = builder.Build();
 
@@ -25,29 +37,53 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
+app.MapGet("api/clientes", (IClienteRepositorio repositorio) =>
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+    var clientes = repositorio.Listar();
+    return Results.Ok(clientes);
+});
 
-app.MapGet("/weatherforecast", () =>
+app.MapGet("api/clientes{int:id}", (IClienteRepositorio repositorio,int id) =>
 {
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
+    var clientes = repositorio.buscarPorId(id);
+    return Results.Ok(clientes);
+});
+
+app.MapGet("api/categorias", (ICategoriaRepositorio repositorio) =>
+    {
+        var categorias = repositorio.Listar();
+        return Results.Ok(categorias);
+    });
+
+
+app.MapGet("api/productos", (IProductoRepositorio repositorio) =>
+    {
+        var productos = repositorio.Listar();
+        return Results.Ok(productos);
+    });
+
+app.MapGet("api/ventas/{id:int}", (IVentaRepositorio repositorio, int id) =>
+    {
+        var ventas = repositorio.MostrarVenta(id);
+        return Results.Ok(ventas);
+
+    });
+
+
+app.MapGet("api/ventas2/{id:int}", (IVentaRepositorio repositorio, int id) =>
+{
+    var ventas = repositorio.MostrarVenta(id);
+
+
+    return Results.Ok(new
+    {
+
+        Id = ventas.Id,
+        NombreCliente = ventas.Cliente.Nombre,
+        NumeroProductos = ventas.Detalles.Count,
+
+    });
+
+});
 
 app.Run();
-
-internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
