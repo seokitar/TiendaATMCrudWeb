@@ -43,7 +43,7 @@ app.MapGet("api/clientes", (IClienteRepositorio repositorio) =>
     return Results.Ok(clientes);
 });
 
-app.MapGet("api/clientes{int:id}", (IClienteRepositorio repositorio,int id) =>
+app.MapGet("api/clientes/{id}", (IClienteRepositorio repositorio,int id) =>
 {
     var clientes = repositorio.buscarPorId(id);
     return Results.Ok(clientes);
@@ -62,6 +62,13 @@ app.MapGet("api/productos", (IProductoRepositorio repositorio) =>
         return Results.Ok(productos);
     });
 
+app.MapGet("api/productos/{id:int}", (IProductoRepositorio repositorio,int id) =>
+{
+        var productos = repositorio.MostrarProductoCategoria(id);
+        return Results.Ok(productos);  
+});
+
+//Muestra venta detallada con venta_detalle
 app.MapGet("api/ventas/{id:int}", (IVentaRepositorio repositorio, int id) =>
     {
         var ventas = repositorio.MostrarVenta(id);
@@ -69,7 +76,7 @@ app.MapGet("api/ventas/{id:int}", (IVentaRepositorio repositorio, int id) =>
 
     });
 
-
+//Muestra venta detallada con venta_detalle pero se indica los datos a imprimir
 app.MapGet("api/ventas2/{id:int}", (IVentaRepositorio repositorio, int id) =>
 {
     var ventas = repositorio.MostrarVenta(id);
@@ -83,6 +90,20 @@ app.MapGet("api/ventas2/{id:int}", (IVentaRepositorio repositorio, int id) =>
         NumeroProductos = ventas.Detalles.Count,
 
     });
+
+});
+//Por corregir
+app.MapPut("api/productos/{id}", (IProductoRepositorio repositorio,int id) =>
+{
+    var productos = new Producto()
+    {
+       Nombre = "Samsung A80",
+       Precio = 100.50f
+    };
+
+
+    repositorio.Actualizar(id,productos);
+   
 
 });
 

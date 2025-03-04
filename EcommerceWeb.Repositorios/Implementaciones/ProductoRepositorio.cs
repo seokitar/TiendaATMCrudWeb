@@ -14,6 +14,16 @@ namespace EcommerceWeb.Repositorios.Implementaciones
     {
         public ProductoRepositorio(EcommerceDbContext context) : base(context)
         {
+            
+        }
+        public Producto? MostrarProductoCategoria(int IdProducto)
+        {
+            return Context.Set<Producto>()
+                .Include(x => x.Categoria)
+                .FirstOrDefault(x => x.Id == IdProducto);
+
+
+
         }
     }
 }

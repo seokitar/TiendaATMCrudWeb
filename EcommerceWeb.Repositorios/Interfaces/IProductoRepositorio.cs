@@ -9,5 +9,6 @@ namespace EcommerceWeb.Repositorios.Interfaces
 {
     public interface IProductoRepositorio:IRepositorioBase<Producto>
     {
+        Producto? MostrarProductoCategoria(int id);
     }
 }
